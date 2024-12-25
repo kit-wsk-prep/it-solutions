@@ -1,0 +1,26 @@
+product_id,product_name,category,ingredients,price,cost,seasonal,active,introduced_date
+1,Tarte Tropézienne,Tarte,"Brioche dough, pastry cream, orange blossom water, pearl sugar",$6.50 ,$3 ,FALSE,TRUE,4/13/2022
+2,Tarte Bourdaloue,Tarte,"Sweet pastry crust, almond cream, poached pears, almond flakes",$7.00 ,$2 ,TRUE,TRUE,1/13/2023
+3,Tarte Flambée,Tarte,"Thin dough, crème fraîche, onions, bacon lardons",$8.50 ,$2 ,TRUE,TRUE,2/10/2023
+4,Tarte Normande,Tarte,"Sweet pastry crust, apples, Calvados custard, almonds",$6.50 ,$2 ,FALSE,TRUE,5/9/2024
+5,Tarte au Citron Vert et Basilic,Tarte,"Tart shell, lime curd, fresh basil, meringue kisses",$7.50 ,$2 ,FALSE,TRUE,1/18/2024
+6,Pain de Campagne,Bread,"Rustic sourdough, whole wheat flour, rye flour, sea salt",$5.00 ,$1.50 ,TRUE,TRUE,7/5/2022
+7,Fougasse aux Olives,Bread,"Provençal flatbread, Kalamata olives, herbs de Provence, olive oil",$4.50 ,$1.20 ,FALSE,TRUE,6/2/2024
+8,Brioche Feuilletée,Bread,"Laminated brioche dough, butter, sugar",$3.00 ,$0.80 ,TRUE,TRUE,5/5/2022
+9,Pain aux Noix et Figues,Bread,"Whole wheat flour, walnuts, dried figs, honey",$5.50 ,$2 ,TRUE,TRUE,3/15/2022
+10,Pain au Chocolat Pistache,Bread,"Croissant dough, dark chocolate, pistachio paste",$3.50 ,$1 ,FALSE,TRUE,2/27/2022
+11,Paris-Brest Revisité,Pastry,"Choux pastry ring, praline-hazelnut cream, raspberry coulis",$5.50 ,$2 ,TRUE,TRUE,8/20/2023
+12,Éclair Caramel Salé,Pastry,"Choux pastry, salted caramel filling, chocolate glaze, fleur de sel",$4.50 ,$1.50 ,FALSE,TRUE,4/28/2023
+13,Religieuse Exotique,Pastry,"Choux buns, passion fruit curd, coconut cream, mango glaze",$6.00 ,$2.50 ,FALSE,TRUE,2/6/2023
+14,Mille-Feuille Framboise,Pastry,"Puff pastry, raspberry cream, fresh raspberries, powdered sugar",$6.50 ,$2.80 ,FALSE,TRUE,4/25/2024
+15,Cannelé Bordelais,Pastry,"Rum and vanilla custard, caramelized crust",$2.50 ,$0.75 ,TRUE,TRUE,5/21/2023
+16,Croissant Amande,Viennoiserie,"Egg Whites, Cream, Flour, frangipane filling, sliced almonds",$3.80 ,$1.20 ,FALSE,TRUE,2/1/2024
+17,Pain aux Raisins,Viennoiserie,"Sweet bread dough, raisins, pastry cream",$3.20 ,$0.90 ,TRUE,TRUE,9/27/2022
+18,Chausson aux Pommes,Viennoiserie,"Puff pastry, apple compote, cinnamon, sugar",$3.50 ,$1 ,TRUE,TRUE,1/12/2024
+19,Kouign-Amann,Viennoiserie,"Laminated dough, butter, sugar (caramelized)",$4.00 ,$1.30 ,TRUE,TRUE,2/2/2024
+20,Pain Suisse,Viennoiserie,"Brioche dough, pastry cream, chocolate chips",$3.50 ,$1 ,TRUE,TRUE,6/8/2022
+21,Macaron Pistache,Pastry,"Almond Flour, Raisins, Seeds",3.51,1.43,FALSE,TRUE,6/10/2023
+22,Financiers Pistache,Pastry,"Almond flour cakes, browned butter, pistachios",$2.00 ,$0.60 ,FALSE,TRUE,8/31/2022
+23,Madeleines Citron,Pastry,Lemon-infused madeleine cakes,$1.50 ,$0.40 ,FALSE,TRUE,8/18/2023
+24,Croissant,Bread,"Egg Whites, Cream, Lemons, Flour",6.17,4.71,FALSE,TRUE,7/11/2021
+25,Pain au Chocolat,Tarte,"Grains, Raisins, Cream, Seeds, Salt, Egg Whites",4.32,0.51,TRUE,TRUE,12/11/2021

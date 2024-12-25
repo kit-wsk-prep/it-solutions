@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="promotionWizard">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotion Conflict Resolution Wizard</title>
+    <script src="angular.min.js"></script>
+    <style>
+        .warning {
+            color: #d9534f;
+            font-weight: bold;
+        }
+        .feedback {
+            color: #5cb85c;
+            font-weight: bold;
+        }
+        input[type="date"], input[type="number"] {
+            margin: 5px 0;
+            padding: 5px;
+        }        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .window {
+            background-color: #ffffff;
+            border: 1px solid #999999;
+            border-radius: 3px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            width: 800px;
+            margin: 0 auto;
+        }
+        .title-bar {
+            background: linear-gradient(to bottom, #e1e1e1, #c1c1c1);
+            padding: 8px 12px;
+            border-bottom: 1px solid #999999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title-bar-text {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .window-buttons {
+            display: flex;
+        }
+        .window-button {
+            width: 16px;
+            height: 16px;
+            margin-left: 5px;
+            border: 1px solid #999999;
+            background-color: #ffffff;
+        }
+        .content {
+            padding: 20px;
+        }
+        h1, h2 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 0 15px 0;
+        }
+        .new-promotion, .conflict-details {
+            background-color: #f9f9f9;
+            border: 1px solid #dddddd;
+            border-radius: 3px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .new-promotion p, .conflict-details p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .conflict-list {
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .conflict-item {
+            padding: 10px;
+            border-bottom: 1px solid #cccccc;
+            display: flex;
+            align-items: center;
+        }
+        .conflict-item:last-child {
+            border-bottom: none;
+        }
+        .conflict-radio {
+            margin-right: 10px;
+        }
+        .conflict-info {
+            flex-grow: 1;
+            font-size: 14px;
+        }
+        .button-group {
+            text-align: right;
+            border-top: 1px solid #cccccc;
+            padding-top: 15px;
+        }
+        button {
+            padding: 6px 12px;
+            margin-left: 10px;
+            border: 1px solid #adadad;
+            background: linear-gradient(to bottom, #f0f0f0, #e5e5e5);
+            cursor: pointer;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 14px;
+        }
+        button:hover {
+            background: linear-gradient(to bottom, #e5e5e5, #f0f0f0);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .timeline {
+            height: 120px;
+            background-color: #f0f0f0;
+            position: relative;
+            margin-top: 20px;
+            border: 1px solid #cccccc;
+            padding: 10px;
+        }
+        .timeline-bar {
+            position: absolute;
+            height: 20px;
+            background-color: #cccccc;
+        }
+        .timeline-label {
+            position: absolute;
+            font-size: 12px;
+            bottom: 5px;
+        }
+        .timeline-promotion {
+            position: absolute;
+            font-size: 12px;
+            font-weight: bold;
+            left: 5px;
+        }
+        .timeline-product {
+            position: absolute;
+            top: 130px;
+            font-size: 12px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body ng-controller="WizardController">
+    <div class="window">
+        <div class="title-bar">
+            <span class="title-bar-text">Promotion Conflict Resolution Wizard</span>
+            <div class="window-buttons">
+                <div class="window-button"></div>
+                <div class="window-button"></div>
+                <div class="window-button"></div>
+            </div>
+        </div>
+        <div class="content">
+            <div ng-show="currentStep === 1">
+                <div class="new-promotion">
+                    <h2>New/Edited Promotion Details</h2>
+                    <p><strong>Name:</strong> {{newPromotion.name}}</p>
+                    <p><strong>Discount:</strong> {{newPromotion.discountType}} {{newPromotion.discountValue}}</p>
+                    <p><strong>Products:</strong> {{newPromotion.products.join(', ')}}</p>
+                    <p><strong>Date Range:</strong> {{newPromotion.startDate | date:'yyyy-MM-dd'}} - {{newPromotion.endDate | date:'yyyy-MM-dd'}}</p>
+                    <p><strong>Priority:</strong> {{newPromotion.priority}}</p>
+                </div>
+                <h2>Step 1: List of Conflicts</h2>
+                <p>The following conflicts were detected. Please select a conflict to resolve and click Next.</p>
+                <div class="conflict-list">
+                    <div class="conflict-item" ng-repeat="conflict in conflicts">
+                        <input type="radio" name="conflictChoice" ng-model="$parent.selectedConflict" ng-value="$index" class="conflict-radio" id="conflict{{$index}}">
+                        <label for="conflict{{$index}}" class="conflict-info">
+                            <strong>Conflict {{$index + 1}}</strong>
+                            <div><strong>Existing Promotion:</strong> {{conflict.existingPromotion}}</div>
+                            <div><strong>Conflicting Product:</strong> {{conflict.product}}</div>
+                            <div><strong>Date Range:</strong> {{conflict.startDate | date:'yyyy-MM-dd'}} - {{conflict.endDate | date:'yyyy-MM-dd'}}</div>
+                            <div><strong>Priority:</strong> {{conflict.priority}}</div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="currentStep === 2">
+                <h2>Step 2: Conflict Notification</h2>
+                <div class="conflict-details">
+                    <h3>New/Edited Promotion</h3>
+                    <p><strong>Name:</strong> {{newPromotion.name}}</p>
+                    <p><strong>Date Range:</strong> {{newPromotion.startDate | date:'yyyy-MM-dd'}} - {{newPromotion.endDate | date:'yyyy-MM-dd'}}</p>
+                    <p><strong>Priority:</strong> {{newPromotion.priority}}</p>
+                    <h3>Existing Promotion</h3>
+                    <p><strong>Name:</strong> {{conflicts[selectedConflict].existingPromotion}}</p>
+                    <p><strong>Date Range:</strong> {{conflicts[selectedConflict].startDate | date:'yyyy-MM-dd'}} - {{conflicts[selectedConflict].endDate | date:'yyyy-MM-dd'}}</p>
+                    <p><strong>Priority:</strong> {{conflicts[selectedConflict].priority}}</p>
+                    <p><strong>Conflicting Product:</strong> {{conflicts[selectedConflict].product}}</p>
+                </div>
+                <p>This conflict exists because the product is associated with multiple promotions of the same priority within the same partial or complete date period.</p>
+                <div class="timeline">
+                    <div class="timeline-bar" ng-style="getTimelineStyle(conflicts[selectedConflict], 'existing')"></div>
+                    <div class="timeline-promotion" ng-style="getTimelineTextStyle(conflicts[selectedConflict], 'existing')">
+                        {{conflicts[selectedConflict].existingPromotion}}
+                    </div>
+                    <div class="timeline-bar" ng-style="getTimelineStyle(newPromotion, 'new')"></div>
+                    <div class="timeline-promotion" ng-style="getTimelineTextStyle(newPromotion, 'new')">
+                        {{newPromotion.name}}
+                    </div>
+                    <div class="timeline-label" style="left: 0%">{{getEarliestDate() | date:'yyyy-MM-dd'}}</div>
+                    <div class="timeline-label" style="right: 0%">{{getLatestDate() | date:'yyyy-MM-dd'}}</div>
+                </div>
+                <div class="timeline-product">
+                    Conflicting Product: {{conflicts[selectedConflict].product}}
+                </div>
+            </div>
+
+            <div ng-show="currentStep === 3">
+                <h2>Step 3: Priority Change</h2>
+                <p>Current Priority: {{newPromotion.priority}}</p>
+                <p>Changing priority may affect how promotions are applied and stacked. Higher numbers indicate higher priority.</p>
+                <label for="newPriority">New Priority:</label>
+                <input type="number" id="newPriority" ng-model="newPriority" min="1" max="10">
+                <p class="warning" ng-show="newPriority > newPromotion.priority">Warning: Increasing priority might impact other promotions or have unintended consequences.</p>
+            </div>
+
+            <div ng-show="currentStep === 4">
+                <h2>Step 4: Date/Product Adjustment</h2>
+                <div>
+                    <h3>Date Adjustment</h3>
+                    <p>Current Date Range: {{newPromotion.startDate | date:'yyyy-MM-dd'}} - {{newPromotion.endDate | date:'yyyy-MM-dd'}}</p>
+                    <label>New Start Date: <input type="date" ng-model="newStartDate"></label>
+                    <label>New End Date: <input type="date" ng-model="newEndDate"></label>
+                </div>
+                <div>
+                    <h3>Product Removal</h3>
+                    <p>Select products to remove from the promotion:</p>
+                    <div ng-repeat="product in newPromotion.products">
+                        <label>
+                            <input type="checkbox" ng-model="productsToRemove[product]"> {{product}}
+                        </label>
+                    </div>
+                </div>
+                <p class="feedback" ng-show="conflictResolved()">Conflict resolved! You can proceed to save the changes.</p>
+            </div>
+
+            <div ng-show="currentStep === 5">
+                <h2>Step 5: Confirm Changes</h2>
+                <p>Please review your changes and choose to save or cancel:</p>
+                <div class="confirmation-options">
+                    <button ng-click="saveChanges()" class="save-button">Save Changes</button>
+                    <button ng-click="confirmCancel()" class="cancel-button">Cancel Changes</button>
+                </div>
+                <p>Note: Saving will apply all changes to the database. Cancelling will discard all changes.</p>
+            </div>
+
+            <div class="button-group">
+                <button ng-click="cancel()" class="cancel-button">Cancel</button>
+                <button ng-click="back()" ng-disabled="currentStep === 1">Back</button>
+                <button ng-click="next()" ng-disabled="(currentStep === 1 && selectedConflict === null) || (currentStep === 4 && !conflictResolved())">
+                    {{currentStep === 4 ? 'Save' : 'Next'}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('promotionWizard', [])
+            .controller('WizardController', function($scope) {
+                $scope.currentStep = 1;
+                $scope.selectedConflict = null;
+                $scope.newPriority = null;
+                $scope.newStartDate = null;
+                $scope.newEndDate = null;
+                $scope.productsToRemove = {};
+
+                $scope.newPromotion = {
+                    name: "Summer Pastry Extravaganza",
+                    discountType: "Percentage",
+                    discountValue: "15%",
+                    products: ["Tarte Tropézienne", "Paris-Brest Revisité", "Éclair Caramel Salé"],
+                    startDate: new Date("2024-06-01"),
+                    endDate: new Date("2024-08-31"),
+                    priority: "5"
+                };
+
+                $scope.conflicts = [
+                    {
+                        existingPromotion: "Spring Tarte Festival",
+                        product: "Tarte Tropézienne",
+                        startDate: new Date("2024-05-01"),
+                        endDate: new Date("2024-06-30"),
+                        priority: "5"
+                    },
+                    {
+                        existingPromotion: "Pastry Paradise",
+                        product: "Paris-Brest Revisité",
+                        startDate: new Date("2024-07-01"),
+                        endDate: new Date("2024-09-15"),
+                        priority: "5"
+                    },
+                    {
+                        existingPromotion: "Éclair Extravaganza",
+                        product: "Éclair Caramel Salé",
+                        startDate: new Date("2024-08-01"),
+                        endDate: new Date("2024-09-30"),
+                        priority: "5"
+                    }
+                ];
+
+                $scope.getEarliestDate = function() {
+                    var dates = [
+                        $scope.newPromotion.startDate,
+                        $scope.conflicts[$scope.selectedConflict].startDate
+                    ];
+                    return new Date(Math.min.apply(null, dates));
+                };
+
+                $scope.getLatestDate = function() {
+                    var dates = [
+                        $scope.newPromotion.endDate,
+                        $scope.conflicts[$scope.selectedConflict].endDate
+                    ];
+                    return new Date(Math.max.apply(null, dates));
+                };
+
+                $scope.getTimelineStyle = function(promotion, type) {
+                    var start = new Date(promotion.startDate);
+                    var end = new Date(promotion.endDate);
+                    var earliest = $scope.getEarliestDate();
+                    var latest = $scope.getLatestDate();
+                    var totalDays = (latest - earliest) / (1000 * 60 * 60 * 24);
+                    var left = ((start - earliest) / (1000 * 60 * 60 * 24) / totalDays) * 100;
+                    var width = ((end - start) / (1000 * 60 * 60 * 24) / totalDays) * 100;
+
+                    return {
+                        left: left + '%',
+                        width: width + '%',
+                        top: type === 'existing' ? '10px' : '50px',
+                        backgroundColor: type === 'existing' ? '#cccccc' : '#999999'
+                    };
+                };
+
+                $scope.getTimelineTextStyle = function(promotion, type) {
+                    return {
+                        top: type === 'existing' ? '35px' : '75px'
+                    };
+                };
+
+                $scope.conflictResolved = function() {
+                    // This is a placeholder and should be replaced with actual logic
+                    return $scope.newStartDate && $scope.newEndDate || Object.values($scope.productsToRemove).some(Boolean);
+                };
+
+                $scope.cancel = function() {
+                    $scope.currentStep = 5; // Go to confirmation step
+                };
+
+                $scope.back = function() {
+                    if ($scope.currentStep > 1) {
+                        $scope.currentStep--;
+                    }
+                };
+
+                $scope.next = function() {
+                    if ($scope.currentStep < 5) {
+                        $scope.currentStep++;
+                    }
+                };
+
+                $scope.saveChanges = function() {
+                    alert("Changes saved successfully.");
+                    // Implement logic to save changes to the database
+                    $scope.currentStep = 1;
+                    $scope.selectedConflict = null;
+                };
+
+                $scope.confirmCancel = function() {
+                    if (confirm("Are you sure you want to cancel the new/modified promotion? No changes will be made to the database.")) {
+                        alert("Changes cancelled. No modifications were made.");
+                        $scope.currentStep = 1;
+                        $scope.selectedConflict = null;
+                    }
+                };
+            });
+    </script>
+</body>
+</html>
