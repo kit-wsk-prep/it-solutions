@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="loyaltyApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belle Croissant Lyonnais - Loyalty Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .window {
+            width: 1000px;
+            height: 700px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .title-bar {
+            background: linear-gradient(to bottom, #e1e1e1, #c1c1c1);
+            padding: 8px 12px;
+            font-weight: bold;
+            border-bottom: 1px solid #999999;
+        }
+        .content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .customer-list {
+            width: 60%;
+            border-right: 1px solid #cccccc;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .customer-details {
+            width: 40%;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .search-bar {
+            margin-bottom: 10px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .pagination {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .pagination button {
+            margin: 0 5px;
+        }
+        .customer-form label {
+            display: inline-block;
+            width: 120px;
+            margin-bottom: 5px;
+        }
+        .customer-form input[type="number"] {
+            width: 100px;
+        }
+        .button-group {
+            margin-top: 10px;
+        }
+        .button-group button {
+            margin-right: 10px;
+        }
+        .points-breakdown {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .points-breakdown h3 {
+            margin-top: 0;
+        }
+        .points-breakdown table {
+            margin-top: 10px;
+        }
+        .reward-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .reward-dialog h3 {
+            margin-top: 0;
+        }
+        .reward-dialog button {
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style></head>
+<body ng-controller="LoyaltyController">
+    <div class="window">
+        <div class="title-bar">Belle Croissant Lyonnais - Loyalty Management</div>
+        <div class="content">
+            <div class="customer-list">
+                <div class="search-bar">
+                    <input type="text" ng-model="searchTerm" placeholder="Search by name, ID, or email">
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th ng-click="sortBy('customer_id')">Customer ID</th>
+                            <th ng-click="sortBy('first_name')">First Name</th>
+                            <th ng-click="sortBy('last_name')">Last Name</th>
+                            <th ng-click="sortBy('email')">Email</th>
+                            <th ng-click="sortBy('membership_status')">Membership Status</th>
+                            <th ng-click="sortBy('loyalty_points')">Loyalty Points</th>
+                            <th ng-click="sortBy('total_spending')">Total Spending</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="customer in filteredCustomers" ng-click="selectCustomer(customer)">
+                            <td>{{customer.customer_id}}</td>
+                            <td>{{customer.first_name}}</td>
+                            <td>{{customer.last_name}}</td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.membership_status}}</td>
+                            <td>{{customer.loyalty_points}}</td>
+                            <td>{{customer.total_spending | currency:'€'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <button ng-click="prevPage()" ng-disabled="currentPage === 1">Previous</button>
+                    <span>Page {{currentPage}} of {{totalPages}}</span>
+                    <button ng-click="nextPage()" ng-disabled="currentPage === totalPages">Next</button>
+                </div>
+            </div>
+            <div class="customer-details" ng-if="selectedCustomer">
+                <h2>Customer Details</h2>
+                <div class="customer-form">
+                    <label>Customer ID:</label>
+                    <span>{{selectedCustomer.customer_id}}</span><br>
+                    <label>First Name:</label>
+                    <span>{{selectedCustomer.first_name}}</span><br>
+                    <label>Last Name:</label>
+                    <span>{{selectedCustomer.last_name}}</span><br>
+                    <label>Email:</label>
+                    <span>{{selectedCustomer.email}}</span><br>
+                    <label>Membership Status:</label>
+                    <span>{{selectedCustomer.membership_status}}</span><br>
+                    <label>Loyalty Points:</label>
+                    <input type="number" ng-model="selectedCustomer.loyalty_points"><br>
+                </div>
+                <div class="button-group">
+                    <button ng-click="saveChanges()">Save Changes</button>
+                    <button ng-click="cancelChanges()">Cancel</button>
+                    <button ng-click="recalculatePoints()">Recalculate Points</button>
+                    <button ng-click="showRedeemRewards()" ng-if="selectedCustomer.loyalty_points >= 1000">Redeem Rewards</button>
+                </div>
+                <div class="points-breakdown" ng-if="pointsBreakdown">
+                    <h3>Points Breakdown</h3>
+                    <table>
+                        <tr>
+                            <th>Order Date</th>
+                            <th>Amount Spent</th>
+                            <th>Points Earned</th>
+                            <th>Bonus Points</th>
+                        </tr>
+                        <tr ng-repeat="order in pointsBreakdown.orders">
+                            <td>{{order.date}}</td>
+                            <td>{{order.amount | currency:'€'}}</td>
+                            <td>{{order.points}}</td>
+                            <td>{{order.bonus}}</td>
+                        </tr>
+                    </table>
+                    <p>Total Points: {{pointsBreakdown.totalPoints}}</p>
+                    <button ng-click="confirmPointsUpdate()">Confirm Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="reward-dialog" ng-if="showRewardDialog">
+        <h3>Redeem Rewards</h3>
+        <p>Choose a reward option:</p>
+        <button ng-click="redeemReward('discount5')">5€ discount on next purchase</button>
+        <button ng-click="redeemReward('discount10percent')">10% discount on next purchase</button>
+        <button ng-click="redeemReward('tierUpgrade')" ng-if="canUpgradeTier()">Upgrade to next membership tier</button>
+        <button ng-click="closeRewardDialog()">Cancel</button>
+    </div>
+
+    <script>
+        angular.module('loyaltyApp', [])
+            .controller('LoyaltyController', function($scope) {
+                $scope.customers = [
+                {customer_id: 335, first_name: "Pierre", last_name: "Martin", email: "pierre_martin@email.com", membership_status: "Gold", loyalty_points: 1280, total_spending: 128.58, join_date: "2023-05-15"},
+                {customer_id: 336, first_name: "Camille", last_name: "Martin", email: "camille_martin@gmail.com", membership_status: "Basic", loyalty_points: 1599, total_spending: 992.76, join_date: "2023-12-27"},
+                {customer_id: 337, first_name: "Lucas", last_name: "Petit", email: "lucas_petit@email.com", membership_status: "Gold", loyalty_points: 89, total_spending: 898.66, join_date: "2021-07-17"},
+                {customer_id: 338, first_name: "Lucas", last_name: "Lefevre", email: "lucas_lefevre@email.com", membership_status: "Gold", loyalty_points: 56, total_spending: 569.63, join_date: "2021-10-15"},
+                {customer_id: 339, first_name: "Manon", last_name: "Roux", email: "manon_roux@email.com", membership_status: "Silver", loyalty_points: 78, total_spending: 782.26, join_date: "2022-06-17"},
+                {customer_id: 340, first_name: "Camille", last_name: "Lefevre", email: "camille_lefevre@email.com", membership_status: "Basic", loyalty_points: 64, total_spending: 640.9, join_date: "2023-03-06"},
+                {customer_id: 341, first_name: "Adrien", last_name: "Roux", email: "adrien_roux@email.com", membership_status: "Basic", loyalty_points: 61, total_spending: 613.24, join_date: "2021-08-21"},
+                {customer_id: 379, first_name: "Lucas", last_name: "Roux", email: "lucas_roux@email.com", membership_status: "Silver", loyalty_points: 26, total_spending: 262.46, join_date: "2021-09-28"},
+                {customer_id: 380, first_name: "Pierre", last_name: "Dupont", email: "pierre_dupont@email.com", membership_status: "Silver", loyalty_points: 12, total_spending: 127.04, join_date: "2021-12-12"},
+                {customer_id: 381, first_name: "Manon", last_name: "Moreau", email: "manon_moreau@email.com", membership_status: "Silver", loyalty_points: 17, total_spending: 176.64, join_date: "2023-05-17"},
+                {customer_id: 382, first_name: "Lucas", last_name: "Bernard", email: "lucas_bernard@email.com", membership_status: "Gold", loyalty_points: 77, total_spending: 772.58, join_date: "2023-10-09"},
+                {customer_id: 383, first_name: "Chloe", last_name: "Roux", email: "chloe_roux@email.com", membership_status: "Basic", loyalty_points: 1100, total_spending: 112.19, join_date: "2022-09-22"},
+                {customer_id: 384, first_name: "Jean", last_name: "Moreau", email: "jean_moreau@email.com", membership_status: "Silver", loyalty_points: 85, total_spending: 855.26, join_date: "2023-02-07"},
+                {customer_id: 385, first_name: "Sophie", last_name: "Roux", email: "sophie_roux@email.com", membership_status: "Gold", loyalty_points: 19, total_spending: 194.74, join_date: "2022-08-19"},
+                {customer_id: 386, first_name: "Chloe", last_name: "Dubois", email: "chloe_dubois@email.com", membership_status: "Basic", loyalty_points: 75, total_spending: 752.63, join_date: "2021-07-25"},
+                {customer_id: 387, first_name: "Lucas", last_name: "Dubois", email: "lucas_dubois@email.com", membership_status: "Silver", loyalty_points: 2300, total_spending: 232.28, join_date: "2023-02-05"},
+                {customer_id: 388, first_name: "Sophie", last_name: "Dupont", email: "sophie_dupont@email.com", membership_status: "Silver", loyalty_points: 54, total_spending: 543.52, join_date: "2022-02-12"},
+                {customer_id: 389, first_name: "Marie", last_name: "David", email: "marie_david@email.com", membership_status: "Silver", loyalty_points: 64, total_spending: 643.62, join_date: "2021-12-12"},
+                {customer_id: 390, first_name: "Lucas", last_name: "Bernard", email: "lucas_bernard@gmail.com", membership_status: "Gold", loyalty_points: 31, total_spending: 314.43, join_date: "2021-07-05"},
+                {customer_id: 391, first_name: "Adrien", last_name: "Dubois", email: "adrien_dubois@email.com", membership_status: "Gold", loyalty_points: 43, total_spending: 437.96, join_date: "2021-05-03"},
+                {customer_id: 392, first_name: "Jean", last_name: "Leroy", email: "jean_leroy@email.com", membership_status: "Gold", loyalty_points: 8, total_spending: 83.58, join_date: "2021-01-09"},
+                {customer_id: 393, first_name: "Sophie", last_name: "David", email: "sophie_david@email.com", membership_status: "Basic", loyalty_points: 10, total_spending: 105.88, join_date: "2023-06-24"},
+                {customer_id: 394, first_name: "Chloe", last_name: "Moreau", email: "chloe_moreau@gmail.com", membership_status: "Basic", loyalty_points: 1508, total_spending: 89.06, join_date: "2023-08-23"},
+                {customer_id: 395, first_name: "Chloe", last_name: "Dubois", email: "chloe_dubois@email.com", membership_status: "Basic", loyalty_points: 65, total_spending: 654.94, join_date: "2023-03-10"}
+            ];
+
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = 10;
+            $scope.searchTerm = '';
+            $scope.sortColumn = 'customer_id';
+            $scope.sortReverse = true;
+    
+                $scope.sortBy = function(column) {
+                    if ($scope.sortColumn === column) {
+                        $scope.sortReverse = !$scope.sortReverse;
+                    } else {
+                        $scope.sortColumn = column;
+                        $scope.sortReverse = false;
+                    }
+                    $scope.filterCustomers();
+                };
+    
+                $scope.filterCustomers = function() {
+                    var filtered = $scope.customers.filter(function(customer) {
+                        var searchRegex = new RegExp($scope.searchTerm, 'i');
+                        return searchRegex.test(customer.customer_id) ||
+                               searchRegex.test(customer.first_name) ||
+                               searchRegex.test(customer.last_name) ||
+                               searchRegex.test(customer.email);
+                    });
+    
+                    filtered.sort(function(a, b) {
+                        var aValue = a[$scope.sortColumn];
+                        var bValue = b[$scope.sortColumn];
+                        if (aValue < bValue) return $scope.sortReverse ? 1 : -1;
+                        if (aValue > bValue) return $scope.sortReverse ? -1 : 1;
+                        return 0;
+                    });
+    
+                    $scope.filteredCustomers = filtered.slice(
+                        ($scope.currentPage - 1) * $scope.itemsPerPage,
+                        $scope.currentPage * $scope.itemsPerPage
+                    );
+    
+                    $scope.totalPages = Math.ceil(filtered.length / $scope.itemsPerPage);
+                };
+    
+                $scope.prevPage = function() {
+                    if ($scope.currentPage > 1) {
+                        $scope.currentPage--;
+                        $scope.filterCustomers();
+                    }
+                };
+    
+                $scope.nextPage = function() {
+                    if ($scope.currentPage < $scope.totalPages) {
+                        $scope.currentPage++;
+                        $scope.filterCustomers();
+                    }
+                };
+    
+                $scope.selectCustomer = function(customer) {
+                    $scope.selectedCustomer = angular.copy(customer);
+                    $scope.pointsBreakdown = null;
+                };
+    
+                $scope.saveChanges = function() {
+                    var index = $scope.customers.findIndex(c => c.customer_id === $scope.selectedCustomer.customer_id);
+                    if (index !== -1) {
+                        $scope.customers[index] = angular.copy($scope.selectedCustomer);
+                        $scope.filterCustomers();
+                        alert('Changes saved successfully.');
+                    }
+                };
+    
+                $scope.cancelChanges = function() {
+                    $scope.selectedCustomer = null;
+                };
+    
+                $scope.recalculatePoints = function() {
+                    // Simulating API call to fetch order history
+                    var orderHistory = [
+                        { date: '2023-12-15', amount: 50 },
+                        { date: '2024-01-05', amount: 75 },
+                        { date: '2024-02-20', amount: 100 }
+                    ];
+    
+                    var pointsBreakdown = {
+                        orders: [],
+                        totalPoints: 0
+                    };
+    
+                    orderHistory.forEach(function(order) {
+                        var points = Math.floor(order.amount / 10 * 10);
+                        var bonus = 0;
+    
+                        if ($scope.selectedCustomer.membership_status === 'Silver') {
+                            points = Math.floor(order.amount / 10 * 12);
+                        } else if ($scope.selectedCustomer.membership_status === 'Gold') {
+                            points = Math.floor(order.amount / 10 * 15);
+                        }
+    
+                        // Check for anniversary bonus (simplified)
+                        if (order.date === $scope.selectedCustomer.join_date) {
+                            bonus += 25;
+                        }
+    
+                        // Check for promotion bonus (simplified)
+                        bonus += 5;
+    
+                        pointsBreakdown.orders.push({
+                            date: order.date,
+                            amount: order.amount,
+                            points: points,
+                            bonus: bonus
+                        });
+    
+                        pointsBreakdown.totalPoints += points + bonus;
+                    });
+    
+                    $scope.pointsBreakdown = pointsBreakdown;
+                };
+    
+                $scope.confirmPointsUpdate = function() {
+                    $scope.selectedCustomer.loyalty_points = $scope.pointsBreakdown.totalPoints;
+                    $scope.pointsBreakdown = null;
+                    alert('Points updated successfully.');
+                };
+    
+                $scope.showRedeemRewards = function() {
+                    $scope.showRewardDialog = true;
+                };
+    
+                $scope.closeRewardDialog = function() {
+                    $scope.showRewardDialog = false;
+                };
+    
+                $scope.redeemReward = function(rewardType) {
+                    if ($scope.selectedCustomer.loyalty_points >= 1000) {
+                        $scope.selectedCustomer.loyalty_points -= 1000;
+    
+                        switch(rewardType) {
+                            case 'discount5':
+                                alert('5€ discount applied to next purchase.');
+                                break;
+                            case 'discount10percent':
+                                alert('10% discount applied to next purchase.');
+                                break;
+                            case 'tierUpgrade':
+                                if ($scope.selectedCustomer.membership_status === 'Basic') {
+                                    $scope.selectedCustomer.membership_status = 'Silver';
+                                } else if ($scope.selectedCustomer.membership_status === 'Silver') {
+                                    $scope.selectedCustomer.membership_status = 'Gold';
+                                }
+                                alert('Membership tier upgraded.');
+                                break;
+                        }
+    
+                        $scope.saveChanges();
+                        $scope.closeRewardDialog();
+                    }
+                };
+    
+                $scope.canUpgradeTier = function() {
+                    return $scope.selectedCustomer && $scope.selectedCustomer.membership_status !== 'Gold';
+                };
+    
+                // Initialize the filtered customers
+                $scope.filterCustomers();
+    
+                // Watch for changes in searchTerm
+                $scope.$watch('searchTerm', function() {
+                    $scope.currentPage = 1;
+                    $scope.filterCustomers();
+                });
+            });
+    </script>
+</body>
+</html>

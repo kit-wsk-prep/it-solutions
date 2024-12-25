@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="promotionApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belle Croissant Lyonnais - Promotion Management</title>
+    <script src="angular.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .window {
+            width: 800px;
+            height: 600px;
+            background-color: #fff;
+            border: 1px solid #999;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .title-bar {
+            background: linear-gradient(to bottom, #e1e1e1, #c1c1c1);
+            padding: 5px 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #999;
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        button {
+            padding: 5px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+        input, select {
+            width: 200px;
+            padding: 3px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body ng-controller="PromotionController">
+    <div class="window">
+        <div class="title-bar">Belle Croissant Lyonnais - Promotion Management</div>
+        <div class="content">
+            <table>
+                <tr>
+                    <th>Promotion Name</th>
+                    <th>Discount Type</th>
+                    <th>Discount Value</th>
+                    <th>Applicable Products</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Min Order Value</th>
+                    <th>Priority</th>
+                    <th>Actions</th>
+                </tr>
+                <tr ng-repeat="promo in promotions">
+                    <td>{{promo.name}}</td>
+                    <td>{{promo.discountType}}</td>
+                    <td>{{promo.discountValue}}</td>
+                    <td>{{promo.applicableProducts.join(', ')}}</td>
+                    <td>{{promo.startDate | date:'yyyy-MM-dd'}}</td>
+                    <td>{{promo.endDate | date:'yyyy-MM-dd'}}</td>
+                    <td>{{promo.minOrderValue}}</td>
+                    <td>{{promo.priority}}</td>
+                    <td>
+                        <button ng-click="editPromotion(promo)">Edit</button>
+                        <button ng-click="deletePromotion(promo)">Delete</button>
+                    </td>
+                </tr>
+            </table>
+            
+            <div class="button-group">
+                <button ng-click="showAddForm()">Add New Promotion</button>
+            </div>
+
+            <div ng-show="showForm">
+                <h3>{{formTitle}}</h3>
+                <form ng-submit="savePromotion()">
+                    <div class="form-group">
+                        <label for="name">Promotion Name:</label>
+                        <input type="text" id="name" ng-model="currentPromotion.name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="discountType">Discount Type:</label>
+                        <select id="discountType" ng-model="currentPromotion.discountType" required>
+                            <option value="percentage">Percentage</option>
+                            <option value="fixed">Fixed Amount</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="discountValue">Discount Value:</label>
+                        <input type="number" id="discountValue" ng-model="currentPromotion.discountValue" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="applicableProducts">Applicable Products:</label>
+                        <select id="applicableProducts" ng-model="currentPromotion.applicableProducts" multiple required>
+                            <option ng-repeat="product in products" value="{{product}}">{{product}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" id="startDate" ng-model="currentPromotion.startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date:</label>
+                        <input type="date" id="endDate" ng-model="currentPromotion.endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="minOrderValue">Minimum Order Value:</label>
+                        <input type="number" id="minOrderValue" ng-model="currentPromotion.minOrderValue">
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority:</label>
+                        <input type="number" id="priority" ng-model="currentPromotion.priority" required>
+                    </div>
+                    <button type="submit">Save</button>
+                    <button type="button" ng-click="cancelEdit()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('promotionApp', [])
+            .controller('PromotionController', function($scope) {
+                $scope.promotions = [
+                    {
+                        name: "Summer Special",
+                        discountType: "percentage",
+                        discountValue: 15,
+                        applicableProducts: ["Tarte Tropézienne", "Pain de Campagne"],
+                        startDate: new Date("2024-06-01"),
+                        endDate: new Date("2024-08-31"),
+                        minOrderValue: 20,
+                        priority: 5
+                    },
+                    {
+                        name: "Bread Bonanza",
+                        discountType: "fixed",
+                        discountValue: 2,
+                        applicableProducts: ["Pain de Campagne", "Fougasse aux Olives"],
+                        startDate: new Date("2024-07-01"),
+                        endDate: new Date("2024-07-31"),
+                        minOrderValue: 10,
+                        priority: 3
+                    }
+                ];
+
+                $scope.products = [
+                    "Tarte Tropézienne", "Tarte Bourdaloue", "Tarte Flambée", "Tarte Normande",
+                    "Tarte au Citron Vert et Basilic", "Pain de Campagne", "Fougasse aux Olives",
+                    "Brioche Feuilletée", "Pain aux Noix et Figues", "Pain au Chocolat Pistache",
+                    "Paris-Brest Revisité", "Éclair Caramel Salé"
+                ];
+
+                $scope.showForm = false;
+                $scope.formTitle = "";
+                $scope.currentPromotion = {};
+
+                $scope.showAddForm = function() {
+                    $scope.formTitle = "Add New Promotion";
+                    $scope.currentPromotion = {};
+                    $scope.showForm = true;
+                };
+
+                $scope.editPromotion = function(promo) {
+                    $scope.formTitle = "Edit Promotion";
+                    $scope.currentPromotion = angular.copy(promo);
+                    $scope.showForm = true;
+                };
+
+                $scope.savePromotion = function() {
+                    if ($scope.formTitle === "Add New Promotion") {
+                        $scope.promotions.push($scope.currentPromotion);
+                    } else {
+                        var index = $scope.promotions.findIndex(p => p.name === $scope.currentPromotion.name);
+                        if (index !== -1) {
+                            $scope.promotions[index] = $scope.currentPromotion;
+                        }
+                    }
+                    $scope.showForm = false;
+                };
+
+                $scope.cancelEdit = function() {
+                    $scope.showForm = false;
+                };
+
+                $scope.deletePromotion = function(promo) {
+                    if (confirm("Are you sure you want to delete this promotion?")) {
+                        var index = $scope.promotions.indexOf(promo);
+                        if (index !== -1) {
+                            $scope.promotions.splice(index, 1);
+                        }
+                    }
+                };
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+[
+    {
+      "id": 1,
+      "product_id": 2,
+      "quantity": 3,
+      "total_price": 59.97
+    },
+    {
+      "id": 2,
+      "product_id": 1,
+      "quantity": 1,
+      "total_price": 29.99
+    },
+    {
+      "id": 3,
+      "product_id": 3,
+      "quantity": 2,
+      "total_price": 39.98
+    },
+    {
+      "id": 4,
+      "product_id": 2,
+      "quantity": 5,
+      "total_price": 99.95
+    },
+    {
+      "id": 5,
+      "product_id": 4,
+      "quantity": 1,
+      "total_price": 149.99
+    }
+  ]

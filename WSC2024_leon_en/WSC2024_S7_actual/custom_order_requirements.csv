@@ -1,0 +1,150 @@
+ProductId,CustomizationType,CustomizationOption,AdditionalCost,PrerequisiteOption,MaxQuantity,ApplicableCategories
+1,Flavor,Raspberry,0.5,,,Macaron
+1,Flavor,Chocolate,0.5,,,Macaron
+1,Flavor,Lemon,0.5,,,Macaron
+1,Box,6 Macarons,1.5,,,Macaron
+1,Box,12 Macarons,2.5,,,Macaron
+2,Glaze,Chocolate,0.5,,,Pastries
+2,Glaze,Vanilla,0.5,,,Pastries
+2,Glaze,Sugar Glaze,0.0,,,Pastries
+2,Topping,Sprinkles,0.5,Glaze,3,"Pastries, Glaze"
+2,Topping,Nuts,0.75,Glaze,2,"Pastries, Glaze"
+2,Topping,Fresh Fruit,1.0,,1,Pastries
+2,Filling,Chocolate Ganache,1.0,,,Pastries
+2,Filling,Vanilla Custard,0.75,,,Pastries
+2,Filling,Coffee Cream,1.0,,,Pastries
+2,Message,Custom Message,2.0,,,Pastries
+3,Flavor,Raspberry,0.5,,,Macaron
+3,Flavor,Chocolate,0.5,,,Macaron
+3,Flavor,Lemon,0.5,,,Macaron
+3,Box,6 Macarons,1.5,,,Macaron
+3,Box,12 Macarons,2.5,,,Macaron
+4,Flour,Whole Wheat,0.0,,,Bread
+4,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+4,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+4,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+4,Extra,Extra Loaf,2.5,,,Bread
+4,Sliced,TRUE,-0.25,,,Bread
+5,Glaze,Chocolate,0.5,,,Pastries
+5,Glaze,Vanilla,0.5,,,Pastries
+5,Glaze,Sugar Glaze,0.0,,,Pastries
+5,Topping,Sprinkles,0.5,Glaze,3,"Pastries, Glaze"
+5,Topping,Nuts,0.75,Glaze,2,"Pastries, Glaze"
+5,Topping,Fresh Fruit,1.0,,1,Pastries
+5,Filling,Chocolate Ganache,1.0,,,Pastries
+5,Filling,Vanilla Custard,0.75,,,Pastries
+5,Filling,Coffee Cream,1.0,,,Pastries
+5,Message,Custom Message,2.0,,,Pastries
+6,Flour,Whole Wheat,0.0,,,Bread
+6,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+6,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+6,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+6,Extra,Extra Loaf,2.5,,,Bread
+6,Sliced,TRUE,-0.25,,,Bread
+7,Size,Medium,5.0,,,Tarte
+7,Size,Large,10.0,,,Tarte
+7,Frosting,Chocolate,0.0,,,Tarte
+7,Frosting,Vanilla,0.0,,,Tarte
+7,Message,Custom Message,2.0,,,Tarte
+9,Size,Medium,5.0,,,Tarte
+9,Size,Large,10.0,,,Tarte
+9,Frosting,Chocolate,0.0,,,Tarte
+9,Frosting,Vanilla,0.0,,,Tarte
+9,Message,Custom Message,2.0,,,Tarte
+10,Flavor,Raspberry,0.5,,,Macaron
+10,Flavor,Chocolate,0.5,,,Macaron
+10,Flavor,Lemon,0.5,,,Macaron
+10,Box,6 Macarons,1.5,,,Macaron
+10,Box,12 Macarons,2.5,,,Macaron
+11,Flour,Whole Wheat,0.0,,,Bread
+11,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+11,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+11,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+11,Extra,Extra Loaf,2.5,,,Bread
+11,Sliced,TRUE,-0.25,,,Bread
+12,Flour,Whole Wheat,0.0,,,Bread
+12,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+12,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+12,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+12,Extra,Extra Loaf,2.5,,,Bread
+12,Sliced,TRUE,-0.25,,,Bread
+13,Flour,Whole Wheat,0.0,,,Bread
+13,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+13,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+13,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+13,Extra,Extra Loaf,2.5,,,Bread
+13,Sliced,TRUE,-0.25,,,Bread
+14,Flavor,Raspberry,0.5,,,Macaron
+14,Flavor,Chocolate,0.5,,,Macaron
+14,Flavor,Lemon,0.5,,,Macaron
+14,Box,6 Macarons,1.5,,,Macaron
+14,Box,12 Macarons,2.5,,,Macaron
+15,Flour,Whole Wheat,0.0,,,Bread
+15,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+15,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+15,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+15,Extra,Extra Loaf,2.5,,,Bread
+15,Sliced,TRUE,-0.25,,,Bread
+16,Flour,Whole Wheat,0.0,,,Bread
+16,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+16,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+16,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+16,Extra,Extra Loaf,2.5,,,Bread
+16,Sliced,TRUE,-0.25,,,Bread
+17,Glaze,Chocolate,0.5,,,Pastries
+17,Glaze,Vanilla,0.5,,,Pastries
+17,Glaze,Sugar Glaze,0.0,,,Pastries
+17,Topping,Sprinkles,0.5,Glaze,3,"Pastries, Glaze"
+17,Topping,Nuts,0.75,Glaze,2,"Pastries, Glaze"
+17,Topping,Fresh Fruit,1.0,,1,Pastries
+17,Filling,Chocolate Ganache,1.0,,,Pastries
+17,Filling,Vanilla Custard,0.75,,,Pastries
+17,Filling,Coffee Cream,1.0,,,Pastries
+17,Message,Custom Message,2.0,,,Pastries
+18,Size,Medium,5.0,,,Tarte
+18,Size,Large,10.0,,,Tarte
+18,Frosting,Chocolate,0.0,,,Tarte
+18,Frosting,Vanilla,0.0,,,Tarte
+18,Message,Custom Message,2.0,,,Tarte
+19,Flour,Whole Wheat,0.0,,,Bread
+19,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+19,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+19,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+19,Extra,Extra Loaf,2.5,,,Bread
+19,Sliced,TRUE,-0.25,,,Bread
+20,Flavor,Raspberry,0.5,,,Macaron
+20,Flavor,Chocolate,0.5,,,Macaron
+20,Flavor,Lemon,0.5,,,Macaron
+20,Box,6 Macarons,1.5,,,Macaron
+20,Box,12 Macarons,2.5,,,Macaron
+21,Flavor,Raspberry,0.5,,,Macaron
+21,Flavor,Chocolate,0.5,,,Macaron
+21,Flavor,Lemon,0.5,,,Macaron
+21,Box,6 Macarons,1.5,,,Macaron
+21,Box,12 Macarons,2.5,,,Macaron
+22,Size,Medium,5.0,,,Tarte
+22,Size,Large,10.0,,,Tarte
+22,Frosting,Chocolate,0.0,,,Tarte
+22,Frosting,Vanilla,0.0,,,Tarte
+22,Message,Custom Message,2.0,,,Tarte
+23,Glaze,Chocolate,0.5,,,Pastries
+23,Glaze,Vanilla,0.5,,,Pastries
+23,Glaze,Sugar Glaze,0.0,,,Pastries
+23,Topping,Sprinkles,0.5,Glaze,3,"Pastries, Glaze"
+23,Topping,Nuts,0.75,Glaze,2,"Pastries, Glaze"
+23,Topping,Fresh Fruit,1.0,,1,Pastries
+23,Filling,Chocolate Ganache,1.0,,,Pastries
+23,Filling,Vanilla Custard,0.75,,,Pastries
+23,Filling,Coffee Cream,1.0,,,Pastries
+23,Message,Custom Message,2.0,,,Pastries
+24,Flavor,Raspberry,0.5,,,Macaron
+24,Flavor,Chocolate,0.5,,,Macaron
+24,Flavor,Lemon,0.5,,,Macaron
+24,Box,6 Macarons,1.5,,,Macaron
+24,Box,12 Macarons,2.5,,,Macaron
+25,Flour,Whole Wheat,0.0,,,Bread
+25,Seeds/Grains,Sesame Seeds,0.25,,,Bread
+25,Seeds/Grains,Poppy Seeds,0.25,,,Bread
+25,Seeds/Grains,Sunflower Seeds,0.5,,,Bread
+25,Extra,Extra Loaf,2.5,,,Bread
+25,Sliced,TRUE,-0.25,,,Bread
