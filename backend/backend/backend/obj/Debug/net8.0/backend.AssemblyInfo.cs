@@ -11,15 +11,13 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("WpfApp")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5cfa76e28d3f355b8193c8ce6df5ddadcacc957a")]
-[assembly: System.Reflection.AssemblyProductAttribute("WpfApp")]
-[assembly: System.Reflection.AssemblyTitleAttribute("WpfApp")]
+[assembly: System.Reflection.AssemblyProductAttribute("backend")]
+[assembly: System.Reflection.AssemblyTitleAttribute("backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
-[assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
-[assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
 // Создано классом WriteCodeFragment MSBuild.
 
