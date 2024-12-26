@@ -1,0 +1,26 @@
+product_id,product_name,category,ingredients,price,cost,seasonal,active,introduced_date
+1,Croissant,Bread,"Egg Whites, Cream, Lemons, Flour",6.17,4.71,False,True,2022-04-13
+2,Pain au Chocolat,Tarte,"Grains, Raisins, Cream, Seeds, Salt, Egg Whites",4.32,0.51,True,True,2023-01-13
+3,Baguette Tradition,Pastries,"Pistachio, Egg Whites, Flour, Cream, Raisins",2.83,0.56,True,True,2023-02-10
+4,Eclair au Chocolat,Pastries,"Flour, Butter, Raisins, Grains, Lemons",5.53,3.68,False,True,2024-05-09
+5,Tarte aux Fraises,Bread,"Almond Flour, Sugar, Seeds, Egg Whites",4.36,3.55,False,True,2024-01-18
+6,Macaron Pistache,Bread,"Almond Flour, Raisins, Seeds",3.51,1.43,True,True,2022-07-05
+7,Baguette aux Céréales,Bread,"Cream, Seeds, Butter, Flour, Raisins",3.43,2.8,False,True,2024-06-02
+8,Pain au Raisin,Pastries,"Flour, Chocolate, Sugar, Pistachio, Seeds, Lemons",4.66,1.59,True,True,2022-05-05
+9,Tarte au Citron,Pastries,"Seeds, Eggs, Rum, Lemons",3.04,1.98,True,True,2022-03-15
+10,Croissant aux Amandes,Pastries,"Raisins, Rum, Egg Whites",3.41,1.8,False,True,2022-02-27
+11,Croissant,Pastries,"Raisins, Egg Whites, Chocolate, Grains, Butter, Cream",3.7,1.59,True,True,2023-08-20
+12,Pain au Chocolat,Pastries,"Chocolate, Pistachio, Butter, Lemons",5.06,4.1,False,True,2023-04-28
+13,Baguette Tradition,Pastries,"Flour, Pistachio, Seeds, Lemons, Almond Flour",3.41,1.94,False,True,2023-02-06
+14,Eclair au Chocolat,Pastries,"Cream, Pistachio, Chocolate, Eggs, Egg Whites",4.33,1.35,False,True,2024-04-25
+15,Tarte aux Fraises,Pastries,"Sugar, Cream, Raisins, Chocolate",3.78,1.76,True,True,2023-05-21
+16,Macaron Pistache,Tarte,"Rum, Flour, Salt",4.89,1.49,False,True,2024-02-01
+17,Baguette aux Céréales,Tarte,"Grains, Salt, Eggs, Pistachio, Sugar",3.59,2.94,True,True,2022-09-27
+18,Pain au Raisin,Bread,"Egg Whites, Almond Flour, Grains, Raisins, Salt, Pistachio",5.14,1.25,True,True,2024-01-12
+19,Tarte au Citron,Tarte,"Raisins, Chocolate, Flour, Pistachio, Grains, Sugar",3.74,2.97,True,True,2024-02-02
+20,Croissant aux Amandes,Bread,"Flour, Eggs, Cream, Raisins, Seeds",5.96,3.89,True,True,2022-06-08
+21,Croissant,Pastries,"Chocolate, Lemons, Eggs",4.82,2.97,False,True,2023-06-10
+22,Pain au Chocolat,Bread,"Lemons, Rum, Raisins, Cream, Eggs, Egg Whites",6.38,5.33,False,True,2022-08-31
+23,Baguette Tradition,Tarte,"Pistachio, Egg Whites, Rum, Seeds, Raisins",3.63,1.03,False,True,2023-08-18
+24,Eclair au Chocolat,Pastries,"Pistachio, Butter, Salt, Lemons",2.96,1.56,False,True,2022-05-04
+25,Tarte aux Fraises,Bread,"Lemons, Egg Whites, Rum, Flour",6.48,2.01,True,True,2021-12-11
